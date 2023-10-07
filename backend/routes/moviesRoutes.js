@@ -4,6 +4,5 @@ const {getMovies, setMovie, deleteMovie} = require('../controllers/moviesControl
 
 router.get('/', getMovies)
 router.post('/', setMovie)
-router.delete('/:id', deleteMovie)
 
 module.exports = router
