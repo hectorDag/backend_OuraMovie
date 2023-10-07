@@ -3,16 +3,11 @@ const mongoose = require('mongoose')
 const movieSchema = mongoose.Schema({
     adult: {
         type: Boolean,
-        default: false
+        default: false,
+        required: [true, 'Por favor teclea si es para adultos']
     },
     backdrop_path: {
         type: String,
-        validate: {
-            validator: function(v) {
-                return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/.test(v);
-            },
-            message: props => `${props.value} no es una URL válida`
-        }
     },
     genre_ids: {
         type: [Number],
@@ -41,12 +36,6 @@ const movieSchema = mongoose.Schema({
     },
     poster_path: {
         type: String,
-        validate: {
-            validator: function(v) {
-                return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/.test(v);
-            },
-            message: props => `${props.value} no es una URL válida`
-        }
     },
     release_date: {
         type: String,
@@ -70,10 +59,4 @@ const movieSchema = mongoose.Schema({
     }
 })
 
-const pageSchema = mongoose.Schema({
-    results: [movieSchema]
-});
-
-const Page = mongoose.model('Page', pageSchema)
-
-module.exports = Page
+module.exports  = mongoose.model('Movie', movieSchema)
