@@ -30,7 +30,36 @@ const setMovie = asyncHandler( async (req, res) => {
     }
 })
 
+const deleteMovie = asyncHandler(async (req, res) => {
+    const movieId = req.params.id;
+
+    const movie = await Movie.findByIdAndRemove(movieId);
+
+    if (!movie) {
+        res.status(404);
+        throw new Error('Pelicula no encontrada');
+    }
+
+    res.status(200).json({ message: 'Película eliminada con éxito' });
+});
+
+const likeMovie = asyncHandler(async (req, res)  => {
+    try {
+        const movie = await Movie.findById(req.params.id);
+        if (!movie) {
+            return res.status(404).json({ message: 'Pelicula no encontrada' });
+        }
+        movie.vote_count += 1; 
+        await movie.save();
+        res.json(movie);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
 module.exports = {
     getMovies,
-    setMovie
+    setMovie,
+    deleteMovie, 
+    likeMovie
 }
